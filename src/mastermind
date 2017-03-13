@@ -1055,6 +1055,11 @@ def ns_setup(namespace,
                  '',
                  'Allows namespace to use expire-time argument for signing url (1|0)'
              ),
+             allow_empty_file=(
+                 '',
+                 '',
+                 'Client is allowed to upload empty files (1|0)'
+             ),
              attributes_filename=(
                  '',
                  '',
@@ -1161,6 +1166,7 @@ def ns_setup(namespace,
             ),
             check_for_update=check_for_update,
             custom_expiration_time=custom_expiration_time == '1',
+            allow_empty_file=allow_empty_file,
             attributes_filename=attributes_filename == '1',
             attributes_mimetype=attributes_mimetype == '1',
             attributes_ttl_minimum=attributes_ttl_minimum,
@@ -1254,6 +1260,8 @@ def ns_setup(namespace,
             features['select-couple-to-upload'] = select_couple_to_upload in ('1', 'true')
         if custom_expiration_time:
             features['custom-expiration-time'] = custom_expiration_time != '0'
+        if allow_empty_file:
+            features['allow-empty-file'] = allow_empty_file in ('1', 'true')
 
         if features:
             settings['features'] = features

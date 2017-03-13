@@ -69,6 +69,7 @@ class NamespacesQuery(Query):
               reserved_space_percentage=None,
               check_for_update=None,
               custom_expiration_time=None,
+              allow_empty_file=None,
               attributes_filename=None,
               attributes_mimetype=None,
               attributes_ttl=None,
@@ -116,6 +117,7 @@ class NamespacesQuery(Query):
             if does not exists already
           custom_expiration_time: allows namespace to use expire-time argument
             for signing url
+          allow_empty_file: this flag allows client to upload empty files
           attributes_filename: if this flag is True, store filename of a key in key's attributes
           attributes_mimetype: this flag toggles the client's ability to store a key's
                 MIME-type in key's attributes.
@@ -195,6 +197,8 @@ class NamespacesQuery(Query):
             features['select-couple-to-upload'] = select_couple_to_upload in ('1', 'true')
         if custom_expiration_time:
             features['custom-expiration-time'] = custom_expiration_time != '0'
+        if allow_empty_file:
+            features['allow-empty-file'] = allow_empty_file in ('1', 'true')
 
         if features:
             settings['features'] = features

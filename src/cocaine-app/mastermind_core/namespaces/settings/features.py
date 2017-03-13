@@ -47,11 +47,13 @@ class FeaturesSettings(SettingsObject):
     CUSTOM_EXPIRE_TIME = 'custom-expiration-time'
     SELECT_COUPLE_TO_UPLOAD = 'select-couple-to-upload'
     MULTIPART = 'multipart'
+    ALLOW_EMPTY_FILE = 'allow-empty-file'
 
     VALID_SETTING_KEYS = set([
         CUSTOM_EXPIRE_TIME,
         SELECT_COUPLE_TO_UPLOAD,
         MULTIPART,
+        ALLOW_EMPTY_FILE,
     ])
 
     def _rebuild(self):
@@ -80,6 +82,14 @@ class FeaturesSettings(SettingsObject):
     def multipart(self):
         return self._multipart
 
+    @SettingsObject.settings_property
+    def allow_empty_file(self):
+        return self._settings.get(self.ALLOW_EMPTY_FILE)
+
+    @allow_empty_file.setter
+    def allow_empty_file(self, value):
+        self._settings[self.ALLOW_EMPTY_FILE] = value
+
     def validate(self):
         super(FeaturesSettings, self).validate()
 
@@ -100,3 +110,11 @@ class FeaturesSettings(SettingsObject):
                 )
 
         self._multipart.validate()
+
+        if self.ALLOW_EMPTY_FILE in self._settings:
+            if not isinstance(self._settings[self.ALLOW_EMPTY_FILE], bool):
+                raise ValueError(
+                    'Namespace "{}": allow empty file should be boolean'.format(
+                        self.namespace
+                    )
+                )
